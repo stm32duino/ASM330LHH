@@ -38,7 +38,7 @@
  ******************************************************************************
  */
 // In order to test this sketch you need to plug a STEVAL-MKI193V1 in the DIL24 adapter of the X-NUCLEO-IKS01A3
-// In order to configure the X-NUCLEO-IKS01A3 DIL24 adapter in SPI mode you need to unsolder SB5, SB12, SB19 e SB23 and solder SB6, SB10, SB18 e SB22
+// In order to configure the X-NUCLEO-IKS01A3 DIL24 adapter in SPI mode you need to unsolder SB5, SB12, SB19 and SB23 and solder SB6, SB10, SB18 and SB22
 
 // Includes
 #include <ASM330LHHSensor.h>

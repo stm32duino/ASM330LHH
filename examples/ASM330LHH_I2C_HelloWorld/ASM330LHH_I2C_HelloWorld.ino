@@ -75,7 +75,7 @@ void setup() {
   // Initialize I2C bus.
   DEV_I2C.begin();
 
-  AccGyr = new ASM330LHHSensor (&DEV_I2C);
+  AccGyr = new ASM330LHHSensor (&DEV_I2C, ASM330LHH_I2C_ADD_L);
   AccGyr->Enable_X();
   AccGyr->Enable_G();
 }

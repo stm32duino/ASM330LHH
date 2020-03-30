@@ -4,7 +4,7 @@
  * @author  SRA
  * @version V1.0.0
  * @date    March 2020
- * @brief   Abstract Class of an ASM330LHH Automotive (IMU) 6 axes
+ * @brief   Abstract Class of an ASM330LHH Automotive IMU 6 axes
  *          sensor.
  ******************************************************************************
  * @attention
