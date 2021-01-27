@@ -84,6 +84,8 @@ class ASM330LHHSensor
   public:
     ASM330LHHSensor(TwoWire *i2c, uint8_t address=ASM330LHH_I2C_ADD_H);
     ASM330LHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed=2000000);
+    ASM330LHHStatusTypeDef begin();
+    ASM330LHHStatusTypeDef end();
     ASM330LHHStatusTypeDef ReadID(uint8_t *Id);
     ASM330LHHStatusTypeDef Enable_X();
     ASM330LHHStatusTypeDef Disable_X();

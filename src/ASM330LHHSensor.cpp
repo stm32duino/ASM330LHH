@@ -54,66 +54,8 @@ ASM330LHHSensor::ASM330LHHSensor(TwoWire *i2c, uint8_t address) : dev_i2c(i2c), 
   reg_ctx.write_reg = ASM330LHH_io_write;
   reg_ctx.read_reg = ASM330LHH_io_read;
   reg_ctx.handle = (void *)this;
-
-  /* Set DEVICE_CONF bit */
-  if (asm330lhh_device_conf_set(&reg_ctx, PROPERTY_ENABLE) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* Enable register address automatically incremented during a multiple byte
-  access with a serial interface. */
-  if (asm330lhh_auto_increment_set(&reg_ctx, PROPERTY_ENABLE) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* Enable BDU */
-  if (asm330lhh_block_data_update_set(&reg_ctx, PROPERTY_ENABLE) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* FIFO mode selection */
-  if (asm330lhh_fifo_mode_set(&reg_ctx, ASM330LHH_BYPASS_MODE) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* Select default output data rate. */
-  acc_odr = ASM330LHH_XL_ODR_104Hz;
-
-  /* Output data rate selection - power down. */
-  if (asm330lhh_xl_data_rate_set(&reg_ctx, ASM330LHH_XL_ODR_OFF) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* Full scale selection. */
-  if (asm330lhh_xl_full_scale_set(&reg_ctx, ASM330LHH_2g) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* Select default output data rate. */
-  gyro_odr = ASM330LHH_GY_ODR_104Hz;
-
-  /* Output data rate selection - power down. */
-  if (asm330lhh_gy_data_rate_set(&reg_ctx, ASM330LHH_GY_ODR_OFF) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  /* Full scale selection. */
-  if (asm330lhh_gy_full_scale_set(&reg_ctx, ASM330LHH_2000dps) != ASM330LHH_OK)
-  {
-    return;
-  }
-
-  acc_is_enabled = 0;
-  gyro_is_enabled = 0;
-  
-  return;
+  acc_is_enabled = 0U;
+  gyro_is_enabled = 0U;
 }
 
 /** Constructor
@@ -126,36 +68,48 @@ ASM330LHHSensor::ASM330LHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed) 
   reg_ctx.write_reg = ASM330LHH_io_write;
   reg_ctx.read_reg = ASM330LHH_io_read;
   reg_ctx.handle = (void *)this;
-
-  // Configure CS pin
-  pinMode(cs_pin, OUTPUT);
-  digitalWrite(cs_pin, HIGH); 
   dev_i2c = NULL;
-  address = 0;
+  address = 0U;  
+  acc_is_enabled = 0U;
+  gyro_is_enabled = 0U;
+}
+
+/**
+ * @brief  Configure the sensor in order to be used
+ * @retval 0 in case of success, an error code otherwise
+ */
+ASM330LHHStatusTypeDef ASM330LHHSensor::begin()
+{
+  if(dev_spi)
+  {
+    // Configure CS pin
+    pinMode(cs_pin, OUTPUT);
+    digitalWrite(cs_pin, HIGH); 
+  }
 
   /* Set DEVICE_CONF bit */
   if (asm330lhh_device_conf_set(&reg_ctx, PROPERTY_ENABLE) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (asm330lhh_auto_increment_set(&reg_ctx, PROPERTY_ENABLE) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* Enable BDU */
   if (asm330lhh_block_data_update_set(&reg_ctx, PROPERTY_ENABLE) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* FIFO mode selection */
   if (asm330lhh_fifo_mode_set(&reg_ctx, ASM330LHH_BYPASS_MODE) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* Select default output data rate. */
@@ -164,13 +118,13 @@ ASM330LHHSensor::ASM330LHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed) 
   /* Output data rate selection - power down. */
   if (asm330lhh_xl_data_rate_set(&reg_ctx, ASM330LHH_XL_ODR_OFF) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* Full scale selection. */
   if (asm330lhh_xl_full_scale_set(&reg_ctx, ASM330LHH_2g) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* Select default output data rate. */
@@ -179,19 +133,46 @@ ASM330LHHSensor::ASM330LHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed) 
   /* Output data rate selection - power down. */
   if (asm330lhh_gy_data_rate_set(&reg_ctx, ASM330LHH_GY_ODR_OFF) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
 
   /* Full scale selection. */
   if (asm330lhh_gy_full_scale_set(&reg_ctx, ASM330LHH_2000dps) != ASM330LHH_OK)
   {
-    return;
+    return ASM330LHH_ERROR;
   }
   
   acc_is_enabled = 0;
   gyro_is_enabled = 0;
 
-  return;
+  return ASM330LHH_OK;
+}
+
+/**
+ * @brief  Disable the sensor and relative resources
+ * @retval 0 in case of success, an error code otherwise
+ */
+ASM330LHHStatusTypeDef ASM330LHHSensor::end()
+{
+  /* Disable both acc and gyro */
+  if (Disable_X() != ASM330LHH_OK)
+  {
+    return ASM330LHH_ERROR;
+  }
+
+  if (Disable_G() != ASM330LHH_OK)
+  {
+    return ASM330LHH_ERROR;
+  }
+
+  /* Reset CS configuration */
+  if(dev_spi)
+  {
+    // Configure CS pin
+    pinMode(cs_pin, INPUT); 
+  }
+
+  return ASM330LHH_OK;
 }
 
 
