@@ -46,10 +46,10 @@
 #define SerialPort Serial
 
 // SPI
-SPIClass *dev_spi;
+SPIClass dev_spi(D11, D12, D3);
 
 // Components
-ASM330LHHSensor *AccGyr;
+ASM330LHHSensor AccGyr(&dev_spi, D10);
 
 void setup() {
   // Led.
@@ -59,12 +59,11 @@ void setup() {
   SerialPort.begin(115200);
   
   // Initialize SPI bus.
-  dev_spi = new SPIClass(D11, D12, D3);  
-  dev_spi->begin();
+  dev_spi.begin();
   
-  AccGyr = new ASM330LHHSensor (dev_spi, D10);
-  AccGyr->Enable_X();
-  AccGyr->Enable_G();
+  AccGyr.begin();
+  AccGyr.Enable_X();
+  AccGyr.Enable_G();
 }
 
 void loop() {
@@ -77,8 +76,8 @@ void loop() {
   // Read accelerometer and gyroscope.
   int32_t accelerometer[3];
   int32_t gyroscope[3];
-  AccGyr->Get_X_Axes(accelerometer);
-  AccGyr->Get_G_Axes(gyroscope);
+  AccGyr.Get_X_Axes(accelerometer);
+  AccGyr.Get_G_Axes(gyroscope);
 
   // Output data.
   SerialPort.print("ASM330LHH: | Acc[mg]: ");
