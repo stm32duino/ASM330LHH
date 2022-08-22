@@ -1012,7 +1012,7 @@ int32_t asm330lhh_fifo_out_raw_get(asm330lhh_ctx_t *ctx, uint8_t *buff)
 
 /**
   * @defgroup   ASM330LHH_common
-  * @brief      This section groups common usefull functions.
+  * @brief      This section groups common useful functions.
   * @{
   *
   */
@@ -2117,7 +2117,7 @@ int32_t asm330lhh_i2c_interface_get(asm330lhh_ctx_t *ctx,
 /**
   * @defgroup   ASM330LHH_interrupt_pins
   * @brief      This section groups all the functions that manage
-  *             interrup pins
+  *             interrupt pins
   * @{
   *
   */
