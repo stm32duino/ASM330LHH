@@ -84,64 +84,64 @@ int32_t asm330lhh_write_reg(asm330lhh_ctx_t* ctx, uint8_t reg, uint8_t* data,
   *
   */
 
-float_t asm330lhh_from_fs2g_to_mg(int16_t lsb)
+float asm330lhh_from_fs2g_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb * 0.061f);
+  return ((float)lsb * 0.061f);
 }
 
-float_t asm330lhh_from_fs4g_to_mg(int16_t lsb)
+float asm330lhh_from_fs4g_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb * 0.122f);
+  return ((float)lsb * 0.122f);
 }
 
-float_t asm330lhh_from_fs8g_to_mg(int16_t lsb)
+float asm330lhh_from_fs8g_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb * 0.244f);
+  return ((float)lsb * 0.244f);
 }
 
-float_t asm330lhh_from_fs16g_to_mg(int16_t lsb)
+float asm330lhh_from_fs16g_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb * 0.488f);
+  return ((float)lsb * 0.488f);
 }
 
-float_t asm330lhh_from_fs125dps_to_mdps(int16_t lsb)
+float asm330lhh_from_fs125dps_to_mdps(int16_t lsb)
 {
-  return ((float_t)lsb * 4.375f);
+  return ((float)lsb * 4.375f);
 }
 
-float_t asm330lhh_from_fs250dps_to_mdps(int16_t lsb)
+float asm330lhh_from_fs250dps_to_mdps(int16_t lsb)
 {
-  return ((float_t)lsb * 8.75f);
+  return ((float)lsb * 8.75f);
 }
 
-float_t asm330lhh_from_fs500dps_to_mdps(int16_t lsb)
+float asm330lhh_from_fs500dps_to_mdps(int16_t lsb)
 {
-  return ((float_t)lsb * 17.50f);
+  return ((float)lsb * 17.50f);
 }
 
-float_t asm330lhh_from_fs1000dps_to_mdps(int16_t lsb)
+float asm330lhh_from_fs1000dps_to_mdps(int16_t lsb)
 {
-  return ((float_t)lsb * 35.0f);
+  return ((float)lsb * 35.0f);
 }
 
-float_t asm330lhh_from_fs2000dps_to_mdps(int16_t lsb)
+float asm330lhh_from_fs2000dps_to_mdps(int16_t lsb)
 {
-  return ((float_t)lsb * 70.0f);
+  return ((float)lsb * 70.0f);
 }
 
-float_t asm330lhh_from_fs4000dps_to_mdps(int16_t lsb)
+float asm330lhh_from_fs4000dps_to_mdps(int16_t lsb)
 {
-  return ((float_t)lsb * 140.0f);
+  return ((float)lsb * 140.0f);
 }
 
-float_t asm330lhh_from_lsb_to_celsius(int16_t lsb)
+float asm330lhh_from_lsb_to_celsius(int16_t lsb)
 {
-  return (((float_t)lsb / 256.0f) + 25.0f);
+  return (((float)lsb / 256.0f) + 25.0f);
 }
 
-float_t asm330lhh_from_lsb_to_nsec(int32_t lsb)
+float asm330lhh_from_lsb_to_nsec(int32_t lsb)
 {
-  return ((float_t)lsb * 25000.0f);
+  return ((float)lsb * 25000.0f);
 }
 
 /**
@@ -1012,7 +1012,7 @@ int32_t asm330lhh_fifo_out_raw_get(asm330lhh_ctx_t *ctx, uint8_t *buff)
 
 /**
   * @defgroup   ASM330LHH_common
-  * @brief      This section groups common usefull functions.
+  * @brief      This section groups common useful functions.
   * @{
   *
   */
@@ -2117,7 +2117,7 @@ int32_t asm330lhh_i2c_interface_get(asm330lhh_ctx_t *ctx,
 /**
   * @defgroup   ASM330LHH_interrupt_pins
   * @brief      This section groups all the functions that manage
-  *             interrup pins
+  *             interrupt pins
   * @{
   *
   */
