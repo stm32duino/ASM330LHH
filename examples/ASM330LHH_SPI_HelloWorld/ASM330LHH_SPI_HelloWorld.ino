@@ -46,10 +46,14 @@
 #define SerialPort Serial
 
 // SPI
+#ifdef ARDUINO_ARCH_STM32
 SPIClass dev_spi(D11, D12, D3);
+#else
+#define dev_spi SPI
+#endif
 
 // Components
-ASM330LHHSensor AccGyr(&dev_spi, D10);
+ASM330LHHSensor AccGyr(&dev_spi, 10);
 
 void setup() {
   // Led.
